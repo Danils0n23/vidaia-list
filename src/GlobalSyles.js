@@ -51,6 +51,13 @@ const GlobalStyles = createGlobalStyle`
     outline: none;
   }
 
+   .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+
   button {
     padding: 10px 20px;
     font-size: 16px;

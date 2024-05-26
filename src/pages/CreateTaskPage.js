@@ -46,7 +46,9 @@ const CreateTaskPage = () => {
             <option value="high">Alta</option>
           </select>
         </label>
+        <div className='button-container'>
         <button type="submit">Adicionar Tarefa</button>
+        </div>
       </form>
     </div>
   );

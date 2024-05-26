@@ -50,7 +50,9 @@ const EditTaskPage = ({ tasks, editTask }) => {
             <option value="high">Alta</option>
           </select>
         </label>
+        <div className='button-container'>
         <button type="submit">Salvar Alterações</button>
+        </div>
       </form>
     </div>
   );
