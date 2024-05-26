@@ -19,6 +19,10 @@ const GlobalStyles = createGlobalStyle`
     color: #333;
   }
 
+  h1 {
+    text-align: center;
+  }
+
   input, textarea, select, button {
     font-family: inherit;
   }
