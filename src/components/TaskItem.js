@@ -1,7 +1,6 @@
-// src/components/TaskItem.js
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { BsPencilSquare, BsTrash } from 'react-icons/bs'; // Importando os ícones do pacote react-icons/bs
 
 const TaskContainer = styled.div`
   border: 1px solid #ddd;
@@ -9,6 +8,12 @@ const TaskContainer = styled.div`
   margin: 10px 0;
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Centraliza os ícones verticalmente */
+`;
+
+const IconsContainer = styled.div`
+  display: flex;
+  gap: 10px; /* Espaçamento entre os ícones */
 `;
 
 const TaskItem = ({ task }) => {
@@ -20,10 +25,12 @@ const TaskItem = ({ task }) => {
         <p>{task.dueDate}</p>
         <p>{task.priority}</p>
       </div>
-      <div>
-        <Link to={`/edit/${task.id}`}>Editar</Link>
-        <Link to={`/delete/${task.id}`}>Excluir</Link>
-      </div>
+      <IconsContainer>
+        {/* Ícone de editar com tamanho e cor personalizados */}
+        <BsPencilSquare size={24} color="#007bff" />
+        {/* Ícone de excluir com tamanho e cor personalizados */}
+        <BsTrash size={24} color="#dc3545" />
+      </IconsContainer>
     </TaskContainer>
   );
 };
