@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TaskList from "../components/TaskList";
 import tasksData from '../data/taskData.json';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
 
 const HomePage = ({ toggleComplete }) => {
   const [tasks, setTasks] = useState([]);
@@ -15,7 +18,11 @@ const HomePage = ({ toggleComplete }) => {
     <div>
       <h1>Lista de Tarefas</h1>
       <TaskList tasks={tasks} toggleComplete={toggleComplete} />
-      <Link to="/create">Adicionar Tarefa</Link>
+      <div>
+      <Link to="/create" className="top-left-link">
+      <FontAwesomeIcon icon={faPlus} />
+    </Link>
+    </div>
     </div>
   );
 };

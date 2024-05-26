@@ -76,6 +76,64 @@ const GlobalStyles = createGlobalStyle`
     background-color: #ccc;
     cursor: not-allowed;
   }
+
+  .top-left-link {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.top-left-link {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin-top:30px;
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.top-left-link:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .top-left-link {
+      top: 5px;
+      right: 5px;
+      padding: 8px;
+      font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-left-link {
+      top: 3px;
+      right: 3px;
+      padding: 6px;
+      font-size: 12px;
+  }
+}
+
 `;
 
 export default GlobalStyles;
