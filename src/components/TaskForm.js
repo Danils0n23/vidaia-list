@@ -1,24 +1,62 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-// Styled-components for enhanced styling
-const PageContainer = styled.div`
-  padding: 20px;
+const FormContainer = styled.div`
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
-const Title = styled.h1`
-  font-size: 2.5rem;
-  margin-bottom: 30px;
+const Title = styled.h2`
+  font-size: 2rem;
+  margin-bottom: 20px;
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #333;
 `;
 
-const AddTaskButton = styled.button`
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Label = styled.label`
+  margin-bottom: 10px;
+  color: #555;
+`;
+
+const Input = styled.input`
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+`;
+
+const TextArea = styled.textarea`
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+`;
+
+const Select = styled.select`
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+`;
+
+const Button = styled.button`
   background-color: #4caf50;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: 1.2rem;
   cursor: pointer;
   border-radius: 5px;
@@ -29,61 +67,47 @@ const AddTaskButton = styled.button`
   }
 `;
 
-// Componente para exibir o título da tarefa com cor dinâmica com base na prioridade
-const TaskTitle = styled.h3`
-  font-size: 1.5rem;
-  color: ${props => {
-    switch (props.priority) {
-      case 'low':
-        return '#00bfff'; // Azul para baixa prioridade
-      case 'medium':
-        return '#ffbf00'; // Amarelo para média prioridade
-      case 'high':
-        return '#ff4500'; // Laranja para alta prioridade
-      default:
-        return '#333'; // Cor padrão para outras prioridades
-    }
-  }};
-`;
+const TaskForm = ({ onSubmit }) => {
+  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
+  const [priority, setPriority] = useState('low');
 
-const TaskItem = ({ task, onToggleComplete }) => {
-  const { id, title, priority, completed } = task;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({ title, description, dueDate, priority });
+    navigate('/');
+  };
 
   return (
-    <div>
-      <input type="checkbox" checked={completed} onChange={() => onToggleComplete(id)} />
-      <TaskTitle priority={priority}>{title}</TaskTitle>
-    </div>
+    <FormContainer>
+      <Title>Adicionar Tarefa</Title>
+      <Form onSubmit={handleSubmit}>
+        <Label>
+          Título:
+          <Input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        </Label>
+        <Label>
+          Descrição:
+          <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
+        </Label>
+        <Label>
+          Data de Conclusão:
+          <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+        </Label>
+        <Label>
+          Prioridade:
+          <Select value={priority} onChange={(e) => setPriority(e.target.value)}>
+            <option value="low">Baixa</option>
+            <option value="medium">Média</option>
+            <option value="high">Alta</option>
+          </Select>
+        </Label>
+        <Button type="submit">Adicionar Tarefa</Button>
+      </Form>
+    </FormContainer>
   );
 };
 
-const TaskList = ({ tasks, onToggleComplete }) => {
-  return (
-    <div>
-      {tasks.map(task => (
-        <TaskItem key={task.id} task={task} onToggleComplete={onToggleComplete} />
-      ))}
-    </div>
-  );
-};
-
-const HomePage = ({ onToggleComplete }) => {
-  // Array de tarefas dinâmicas
-  const tasks = [
-    { id: 1, title: 'Fazer compras', priority: 'low', completed: false },
-    { id: 2, title: 'Estudar React', priority: 'medium', completed: true },
-    { id: 3, title: 'Fazer exercícios', priority: 'high', completed: false },
-  ];
-
-  return (
-    <PageContainer>
-      <Title>Gerencie Suas Tarefas</Title>
-      <TaskList tasks={tasks} onToggleComplete={onToggleComplete} />
-      <Link to="/create">
-        <AddTaskButton>Adicionar Tarefa</AddTaskButton>
-      </Link>
-    </PageContainer>
-  );
-};
-
-export default HomePage;
+export default TaskForm;
