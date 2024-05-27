@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const DeleteTaskPage = ({ deleteTask }) => {
+const DeleteTaskPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [showModal, setShowModal] = useState(true);
 
-  const handleDelete = () => {
-    deleteTask(parseInt(id));
-    navigate('/');
+  const handleDelete = async () => {
+    try {
+      const apiUrl = `${process.env.REACT_APP_VIDAIA}/v1/task/${id}`;
+      await axios.delete(apiUrl); // Deleta a tarefa usando a API real
+      navigate('/');
+    } catch (error) {
+      console.error('Erro ao excluir tarefa:', error);
+    }
   };
 
   const handleCancel = () => {

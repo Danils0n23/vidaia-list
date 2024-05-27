@@ -1,25 +1,31 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addTask } from '../api';
+import axios from 'axios';
 
 const CreateTaskPage = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [priority, setPriority] = useState('low');
+  const [priority, setPriority] = useState('BAIXA');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newTask = {
-      id: Date.now(),
       title,
       description,
-      dueDate,
+      completion_date: dueDate,
       priority
     };
-    addTask(newTask); // Adiciona a nova tarefa no arquivo JSON
-    navigate('/');
+
+    try {
+      const apiUrl = `${process.env.REACT_APP_VIDAIA}/v1/task`;
+      await axios.post(apiUrl, newTask); // Adiciona a nova tarefa usando a API real
+      navigate('/');
+    } catch (error) {
+      console.error('Erro ao adicionar tarefa:', error);
+    }
   };
 
   return (
@@ -41,13 +47,13 @@ const CreateTaskPage = () => {
         <label>
           Prioridade:
           <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-            <option value="low">Baixa</option>
-            <option value="medium">Média</option>
-            <option value="high">Alta</option>
+            <option value="BAIXA">Baixa</option>
+            <option value="MEDIA">Média</option>
+            <option value="ALTA">Alta</option>
           </select>
         </label>
         <div className='button-container'>
-        <button type="submit">Adicionar Tarefa</button>
+          <button type="submit">Adicionar Tarefa</button>
         </div>
       </form>
     </div>
