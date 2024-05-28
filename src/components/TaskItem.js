@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
-import { Link } from 'react-router-dom'; // Importe o Link do React Router
+import { Link } from 'react-router-dom';
 
 const TaskContainer = styled.div`
   border: 1px solid #ddd;
@@ -18,13 +18,7 @@ const IconsContainer = styled.div`
 `;
 
 const TaskItem = ({ task }) => {
-  const handleEditClick = () => {
-    // Lógica para lidar com o clique no ícone de edição
-    console.log('Editar tarefa:', task.id);
-  };
-
   const handleDeleteClick = () => {
-    // Lógica para lidar com o clique no ícone de exclusão
     console.log('Excluir tarefa:', task.id);
   };
 
@@ -39,7 +33,7 @@ const TaskItem = ({ task }) => {
       <IconsContainer>
         {/* Link para a página de edição com o ícone de lápis */}
         <Link to={`/edit/${task.id}`}>
-          <BsPencilSquare size={24} color="#007bff" onClick={handleEditClick} />
+          <BsPencilSquare size={24} color="#007bff" />
         </Link>
         {/* Link para a página de exclusão com o ícone de lixeira */}
         <Link to={`/delete/${task.id}`}>

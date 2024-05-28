@@ -9,25 +9,27 @@ const EditTaskPage = () => {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [priority, setPriority] = useState('BAIXA');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTask = async () => {
       try {
         const apiUrl = `${process.env.REACT_APP_VIDAIA}/v1/task/${id}`;
         const response = await axios.get(apiUrl);
-        const task = response.data;
+        const task = response.data?.task;
         setTitle(task.title);
         setDescription(task.description);
         setDueDate(task.completion_date);
         setPriority(task.priority);
+        setLoading(false); // Indicate that data has been loaded
       } catch (error) {
         console.error('Erro ao buscar tarefa:', error);
       }
     };
-
+  
     fetchTask();
   }, [id]);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedTask = {
@@ -45,6 +47,10 @@ const EditTaskPage = () => {
       console.error('Erro ao editar tarefa:', error);
     }
   };
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <div>
