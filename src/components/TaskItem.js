@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BsPencilSquare, BsTrash, BsEye } from 'react-icons/bs'; 
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const TaskContainer = styled.div`
   border: 1px solid #ddd;
@@ -33,9 +34,9 @@ const ModalContent = styled.div`
   background-color: #fff;
   padding: 40px;
   border-radius: 10px;
-  max-width: 600px; /* Aumenta o tamanho máximo da modal */
-  width: 80%; /* Define a largura da modal */
-  position: relative; /* Permite posicionar o botão "Close" */
+  max-width: 600px; 
+  width: 80%;
+  position: relative;
 `;
 
 const CloseButton = styled.button`
@@ -47,7 +48,6 @@ const CloseButton = styled.button`
   font-size: 20px;
   cursor: pointer;
   color: black;
-
 `;
 
 const TaskItem = ({ task }) => {
@@ -61,9 +61,26 @@ const TaskItem = ({ task }) => {
     setIsModalOpen(false);
   };
 
-  const handleDeleteClick = () => {
-    console.log('Excluir tarefa:', task.id);
-    // Adicione aqui a lógica para excluir a tarefa
+  const handleDeleteClick = async () => {
+    try {
+      const apiUrl = `${process.env.REACT_APP_VIDAIA}/v1/task/${task.id}`;
+      await axios.delete(apiUrl);
+      console.log('Tarefa excluída:', task.id);
+      // Atualizar a lista de tarefas após a exclusão
+    } catch (error) {
+      console.error('Erro ao excluir tarefa:', error);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
+  
+    return formattedDate;
   };
 
   return (
@@ -72,14 +89,16 @@ const TaskItem = ({ task }) => {
         <div>
           <h3>{task.title}</h3>
           <p>{task.description}</p>
-          <p>{task.dueDate}</p>
+          <p>{ formatDate(task.completion_date) }</p>
           <p>{task.priority}</p>
         </div>
         <IconsContainer>
           <Link to={`/edit/${task.id}`}>
             <BsPencilSquare size={24} color="#007bff" />
           </Link>
-          <BsTrash size={24} color="#dc3545" onClick={handleDeleteClick} />
+          <Link to={`/delete/${task.id}`}>
+            <BsTrash size={24} color="#dc3545" />
+          </Link>
           <BsEye size={24} color="#28a745" onClick={handleModalOpen} />
         </IconsContainer>
       </TaskContainer>
@@ -89,7 +108,7 @@ const TaskItem = ({ task }) => {
             <CloseButton onClick={handleModalClose}>X</CloseButton>
             <h2>{task.title}</h2>
             <p>Descrição: {task.description}</p>
-            <p>Data de Conclusão: {task.dueDate}</p>
+            <p>Data de Conclusão:  {formatDate(task.completion_date) }</p>
             <p>Prioridade: {task.priority}</p>
           </ModalContent>
         </ModalOverlay>
