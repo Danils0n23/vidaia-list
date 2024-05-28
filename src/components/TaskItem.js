@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { BsPencilSquare, BsTrash } from 'react-icons/bs';
-import { Link } from 'react-router-dom'; // Importe o Link do React Router
+import { BsPencilSquare, BsTrash, BsEye } from 'react-icons/bs'; 
+import { Link } from 'react-router-dom';
 
 const TaskContainer = styled.div`
   border: 1px solid #ddd;
@@ -17,36 +17,84 @@ const IconsContainer = styled.div`
   gap: 10px;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  max-width: 600px; /* Aumenta o tamanho máximo da modal */
+  width: 80%; /* Define a largura da modal */
+  position: relative; /* Permite posicionar o botão "Close" */
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: black;
+
+`;
+
 const TaskItem = ({ task }) => {
-  const handleEditClick = () => {
-    // Lógica para lidar com o clique no ícone de edição
-    console.log('Editar tarefa:', task.id);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   const handleDeleteClick = () => {
-    // Lógica para lidar com o clique no ícone de exclusão
     console.log('Excluir tarefa:', task.id);
+    // Adicione aqui a lógica para excluir a tarefa
   };
 
   return (
-    <TaskContainer>
-      <div>
-        <h3>{task.title}</h3>
-        <p>{task.description}</p>
-        <p>{task.dueDate}</p>
-        <p>{task.priority}</p>
-      </div>
-      <IconsContainer>
-        {/* Link para a página de edição com o ícone de lápis */}
-        <Link to={`/edit/${task.id}`}>
-          <BsPencilSquare size={24} color="#007bff" onClick={handleEditClick} />
-        </Link>
-        {/* Link para a página de exclusão com o ícone de lixeira */}
-        <Link to={`/delete/${task.id}`}>
+    <>
+      <TaskContainer>
+        <div>
+          <h3>{task.title}</h3>
+          <p>{task.description}</p>
+          <p>{task.dueDate}</p>
+          <p>{task.priority}</p>
+        </div>
+        <IconsContainer>
+          <Link to={`/edit/${task.id}`}>
+            <BsPencilSquare size={24} color="#007bff" />
+          </Link>
           <BsTrash size={24} color="#dc3545" onClick={handleDeleteClick} />
-        </Link>
-      </IconsContainer>
-    </TaskContainer>
+          <BsEye size={24} color="#28a745" onClick={handleModalOpen} />
+        </IconsContainer>
+      </TaskContainer>
+      {isModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <CloseButton onClick={handleModalClose}>X</CloseButton>
+            <h2>{task.title}</h2>
+            <p>Descrição: {task.description}</p>
+            <p>Data de Conclusão: {task.dueDate}</p>
+            <p>Prioridade: {task.priority}</p>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+    </>
   );
 };
 

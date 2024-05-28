@@ -1,30 +1,56 @@
-// EditTaskPage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const EditTaskPage = ({ tasks, editTask }) => {
+const EditTaskPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
-  const [priority, setPriority] = useState('low');
+  const [priority, setPriority] = useState('BAIXA');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const task = tasks.find(task => task.id === parseInt(id));
-    if (task) {
-      setTitle(task.title);
-      setDescription(task.description);
-      setDueDate(task.dueDate);
-      setPriority(task.priority);
-    }
-  }, [tasks, id]);
-
-  const handleSubmit = (e) => {
+    const fetchTask = async () => {
+      try {
+        const apiUrl = `${process.env.REACT_APP_VIDAIA}/v1/task/${id}`;
+        const response = await axios.get(apiUrl);
+        const task = response.data?.task;
+        setTitle(task.title);
+        setDescription(task.description);
+        setDueDate(task.completion_date);
+        setPriority(task.priority);
+        setLoading(false); // Indicate that data has been loaded
+      } catch (error) {
+        console.error('Erro ao buscar tarefa:', error);
+      }
+    };
+  
+    fetchTask();
+  }, [id]);
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    editTask(parseInt(id), { title, description, dueDate, priority });
-    navigate('/');
+    const updatedTask = {
+      title,
+      description,
+      completion_date: dueDate,
+      priority
+    };
+
+    try {
+      const apiUrl = `${process.env.REACT_APP_VIDAIA}/v1/task/${id}`;
+      await axios.put(apiUrl, updatedTask);
+      navigate('/');
+    } catch (error) {
+      console.error('Erro ao editar tarefa:', error);
+    }
   };
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <div>
@@ -45,13 +71,13 @@ const EditTaskPage = ({ tasks, editTask }) => {
         <label>
           Prioridade:
           <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-            <option value="low">Baixa</option>
-            <option value="medium">Média</option>
-            <option value="high">Alta</option>
+            <option value="ALTA">Alta</option>
+            <option value="MEDIA">Média</option>
+            <option value="BAIXA">Baixa</option>
           </select>
         </label>
         <div className='button-container'>
-        <button type="submit">Salvar Alterações</button>
+          <button type="submit">Salvar Alterações</button>
         </div>
       </form>
     </div>

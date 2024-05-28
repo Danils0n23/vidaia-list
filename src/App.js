@@ -6,6 +6,7 @@ import CreateTaskPage from './pages/CreateTaskPage';
 import EditTaskPage from './pages/EditTaskPage';
 import DeleteTaskPage from './pages/DeleteTaskPage';
 
+
 const App = () => {
   const [tasks, setTasks] = useState([]);
 
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/create" element={<CreateTaskPage addTask={addTask} />} />
         <Route path="/edit/:id" element={<EditTaskPage tasks={tasks} editTask={editTask} />} />
         <Route path="/delete/:id" element={<DeleteTaskPage tasks={tasks} deleteTask={deleteTask} />} />
+
       </Routes>
     </Router>
   );
