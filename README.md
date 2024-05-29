@@ -9,6 +9,12 @@ Desenvolver uma aplicação web para gerenciar tarefas, permitindo ao usuário c
 - **Frontend:**
   - React
   - Styled-Components
+- **Backend:**
+  - Node.js
+  - ExpressJS
+- **Banco de Dados:**
+  - PostgreSQL
+  - ORM: Prisma (preferencialmente), Knex, Sequelize ou TypeORM
 
 ## Descrição do Projeto
 
@@ -36,26 +42,64 @@ A aplicação será uma lista de tarefas simples, com as seguintes funcionalidad
 4. **Página de Exclusão de Tarefas:**
    - Permite ao usuário excluir uma tarefa existente da lista.
 
+5. **API RESTful:**
+   - O backend fornece endpoints para todas as operações CRUD (Create, Read, Update, Delete) nas tarefas.
+   - É possível criar, ler, atualizar e excluir tarefas por meio da API.
+
+## Requisitos Técnicos
+
+- A aplicação deve ser desenvolvida usando:
+  - **Frontend:** React e Styled-Components para a interface do usuário.
+  - **Backend:** Node.js, ExpressJS, PostgreSQL e uma ORM (preferencialmente Prisma, mas pode ser Knex, Sequelize ou TypeORM).
+- O projeto deve ser acessível online, mas o deploy pode ser feito como achar melhor, não necessitando subir os contêineres.
+
+## Extensões do Projeto
+
+O projeto pode ser estendido com outras funcionalidades, tais como:
+- Autenticação de usuários e permissões de acesso.
+- Notificações por e-mail.
+- Integração com outras ferramentas, como o Google Agenda.
+
+Ponto extra para o uso de Docker (e Docker Compose) para empacotar e distribuir a aplicação.
+
 ## Estrutura do Projeto
 
 ```bash
-frontend
-├── public
-│   └── index.html
-├── src
-│   ├── components
-│   │   └── TaskItem.js
-│   ├── pages
-│   │   ├── HomePage.js
-│   │   ├── CreateTaskPage.js
-│   │   ├── EditTaskPage.js
-│   │   └── DeleteTaskPage.js
-│   ├── App.js
-│   ├── GlobalStyles.js
-│   └── index.js
+.
+├── backend
+│   ├── controllers
+│   │   └── taskController.js
+│   ├── models
+│   │   └── Task.js
+│   ├── routes
+│   │   └── taskRoutes.js
+│   ├── app.js
+│   └── server.js
+├── frontend
+│   ├── public
+│   │   └── index.html
+│   ├── src
+│   │   ├── components
+│   │   │   └── TaskItem.js
+│   │   ├── pages
+│   │   │   ├── HomePage.js
+│   │   │   ├── CreateTaskPage.js
+│   │   │   ├── EditTaskPage.js
+│   │   │   └── DeleteTaskPage.js
+│   │   ├── App.js
+│   │   ├── GlobalStyles.js
+│   │   └── index.js
 ├── README.md
 └── package.json
 ```
+
+### Backend
+
+1. **app.js**: Configurações e middlewares do Express.
+2. **server.js**: Inicializa o servidor.
+3. **controllers/taskController.js**: Lógica das operações CRUD para as tarefas.
+4. **models/Task.js**: Definição do modelo de tarefa usando a ORM escolhida.
+5. **routes/taskRoutes.js**: Define as rotas da API.
 
 ### Frontend
 
@@ -74,6 +118,27 @@ frontend
 ### Pré-requisitos
 
 - Node.js instalado
+- PostgreSQL instalado e configurado
+
+### Backend
+
+1. Navegue até o diretório `backend` e instale as dependências:
+   ```bash
+   cd backend
+   npm install
+   ```
+2. Configure o banco de dados no arquivo `.env`:
+   ```env
+   DATABASE_URL=postgresql://user:password@localhost:5432/todoapp
+   ```
+3. Rode as migrações do banco de dados:
+   ```bash
+   npx prisma migrate dev
+   ```
+4. Inicie o servidor:
+   ```bash
+   npm start
+   ```
 
 ### Frontend
 
@@ -86,6 +151,10 @@ frontend
    ```bash
    npm start
    ```
+
+### Docker (Opcional)
+
+Se desejar usar Docker, crie os arquivos `Dockerfile` e `docker-compose.yml` para o frontend e backend, e inicie os contêineres usando Docker Compose.
 
 ## Contribuições
 

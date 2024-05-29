@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  react-app:
+    build: .
+    ports:
+      - "3008:3008"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - PORT=3008
+    stdin_open: true
+    tty: true
