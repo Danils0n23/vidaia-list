@@ -71,21 +71,30 @@ frontend
 
 ## Como Rodar o Projeto
 
-### Pré-requisitos
+## Pré-requisitos
 
-- Node.js instalado
+```
+Criar um diretório na are trabalho
+Clonar o projecto dentro desse diretório
+```
 
-### Frontend
+Executar o docker compuser
+```
+docker-compose up -d --build
+```
 
-1. Navegue até o diretório `frontend` e instale as dependências:
-   ```bash
-   cd frontend
-   npm install
-   ```
-2. Inicie o servidor de desenvolvimento:
-   ```bash
-   npm start
-   ```
+## Comandos básicos 
+
+```
+Entrar no container vidaia-list-react-app-1
+
+docker exec -it vidaia-list-react-app-1 sh
+
+Executa os seguintes comando
+
+npm install
+
+```
 
 ## Contribuições
 
